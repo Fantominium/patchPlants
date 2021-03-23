@@ -1,8 +1,9 @@
 import React from 'react'
+import Days from './Days'
 function App() {
   return (
     <div>
-      Test
+      <Days/>
     </div>
   )
 }
