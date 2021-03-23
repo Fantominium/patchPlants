@@ -1,9 +1,10 @@
 progress thus far:
 get current date
 get 28 days after that
-format date
-render all dates (need to render 4 at a time, maybe through mycarousel - will revisit after functionality)
-create timeslot prop (only am for now, but that component will be replicated for pm and eve, just as it is)
+formated date
+rendered all dates
+created timeslot comps and the "day" state variable 
+nail down booking logic for all dates, having them persist regardless of scrolling
 
 TODO:
 Still loads;

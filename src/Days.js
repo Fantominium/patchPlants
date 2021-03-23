@@ -5,23 +5,21 @@ import Eve from './timeslotComponents/Eve'
 
 function Days () {
 
-const [dayCollection, setDays] = useState({days: []}) //intended array of 28 days
-const [booked, setBooked] = useState({
-    amBooked: false,
-    pmBooked: false,
-    eveBooked: false
-})
+const [dayCollection, setDays] = useState({days: []})
 
 
 const [currentDay, setCurrentDay] = useState(new Date().toDateString())
 const [currentTime, setCurrentTime] = useState(new Date().getTime())
 
 
-
-function handleChange (event) { //onClick, book the time slot using handleChange
+/**
+ * Uses attr from the event to check against the id, to determine which day ans slot to book
+ * @param {*} event 
+ */
+function handleChange (event) {
     const{name, checked, value} = event.target
     const dayGroup = dayCollection.days
-    //TODO: my naming needs to be updated as the logic is slightly confusing
+
     for (const day of dayGroup){
         if(name === day.id) {
             setDays(
@@ -37,7 +35,7 @@ function handleChange (event) { //onClick, book the time slot using handleChange
 }
 
 /**
- * retrieves the array of 28 days in the future 
+ * retrieves the array of 28 day objects in the future 
  * from current date
  */
 function getDays() {
@@ -46,9 +44,7 @@ function getDays() {
     let currentDayMiliseconds = new Date().getTime()
     let sum = currentDayMiliseconds + oneDay
 
-    /**
-     * TODO get the data to store in the Days array as objects
-     */
+
     //assign current day to subscript 0 
     retArray.push(
         {
@@ -81,25 +77,24 @@ useEffect(
         }
     }, []
 )
-    const displayDates = dayCollection.days.map(day => { 
-        return(
-            <li key={day.id}>
-            {day.id}
-            <Am {...day} handleChange={handleChange} currentTime={currentTime}/>
-            <Pm {...day} handleChange={handleChange} currentTime={currentTime}/>
-            <Eve {...day} handleChange={handleChange} currentTime={currentTime}/>
-        </li>
-        )
-    })
-// console.log("days of our lives",  days.days)
+
+//assign them to a var for cleaner rendering
+const displayDates = dayCollection.days.map(day => { 
     return(
-        <ul>
-            {displayDates}
-        </ul>
+        <li key={day.id}>
+        {day.id}
+        <Am {...day} handleChange={handleChange} currentTime={currentTime}/>
+        <Pm {...day} handleChange={handleChange} currentTime={currentTime}/>
+        <Eve {...day} handleChange={handleChange} currentTime={currentTime}/>
+    </li>
     )
-        //title of the date card
-        // this comp will render these smaller comps via a map function, passing down the booked state to the time slots
-        //have the day "display:none" when all the booked states are true
+})
+return(
+    <ul>
+        {displayDates}
+    </ul>
+)
+    //have the day "display:none" when all the booked states are true
 
 }
 
