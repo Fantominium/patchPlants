@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react'
-
+import Am from './Am'
 
 function Days () {
 
-const [days, setDays] = useState('') //intended array of 28 days
+const [days, setDays] = useState([]) //intended array of 28 days
 const [booked, setBooked] = useState({
     amBooked: false,
     pmBooked: false,
@@ -17,15 +17,19 @@ const [currentTime, setCurrentTime] = useState(new Date().getTime())
 
 
 function handleChange (event) { //onClick, book the time slot using handleChange
-    const[name, value] = event.target
+    const{name, checked} = event.target
     setBooked( prevBooked => {
         return{
-            ...booked,
-            [name]:value
+            ...prevBooked,
+            [name]:checked
         }
     })
 }
 
+/**
+ * retrieves the array of 28 days in the future 
+ * from current date
+ */
 function getDays() {
     let retArray=[]
     let oneDay = 1000*60*60*24
@@ -33,9 +37,9 @@ function getDays() {
     let sum = currentDayMiliseconds + oneDay
 
     //assign current day to subscript 0 
-    retArray.push(new Date().toLocaleString())
+    retArray.push(new Date().toDateString())
     for (let i =1; i < 28; i++) {
-        let tempDate = new Date(sum).toLocaleString()        
+        let tempDate = new Date(sum).toDateString()        
         retArray.push(tempDate)
         sum += oneDay
     }
@@ -43,24 +47,30 @@ function getDays() {
     return retArray
 }
 
+/**
+ * on mount, set days array
+ */
 useEffect(
     () => {
-        if(true){
-            console.log(getDays())//just to test and see what I'm working with
+        if(currentDay){
+            setDays(getDays())
         }
     }, []
 )
-
-console.log("get time", new Date())
+const displayDates = days.map(day => <li key={day}>{day}</li>)
     return(
+        <ul>
+        {displayDates}
+        <Am {...booked} handleChange={handleChange} currentTime={currentTime}/>
+        {console.log(booked.amBooked)}
+        
+        
+        </ul>
+    )
         //title of the date card
-        <div>{currentDay}</div>
         // this comp will render these smaller comps via a map function, passing down the booked state to the time slots
         //have the day "display:none" when all the booked states are true
-        // <Am amBooked={amBooked} handleChange={handleChange} currentTime={currentTime}/>
-        // <Pm />
-        // <Eve />
-    )
+
 }
 
 export default Days
