@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react'
 import Am from './timeslotComponents/Am'
 import Pm from './timeslotComponents/Pm'
 import Eve from './timeslotComponents/Eve'
+import CarouselRender from './displayComponents/CarouselRender'
 
 function Days () {
 
 const [dayCollection, setDays] = useState({days: []})
+const [displayGroup, setDisplayGroup] = useState(4)
 
 
 const [currentDay, setCurrentDay] = useState(new Date().toDateString())
@@ -78,21 +80,38 @@ useEffect(
     }, []
 )
 
+/**
+ * on change to time slots, call side effect to update db value instantly
+ */
+useEffect(
+    () => {
+        if(dayCollection.days){
+            /**Define database call and pass relevant values to be entered into db. Close connection when finished. */
+        }
+    }, [dayCollection]
+)
+
 //assign them to a var for cleaner rendering
 const displayDates = dayCollection.days.map(day => { 
     return(
-        <li key={day.id}>
-        {day.id}
-        <Am {...day} handleChange={handleChange} currentTime={currentTime}/>
-        <Pm {...day} handleChange={handleChange} currentTime={currentTime}/>
-        <Eve {...day} handleChange={handleChange} currentTime={currentTime}/>
-    </li>
+        <ul>
+            <li key={day.id} style={day.am && day.pm && day.eve ? {display:"none"} : {display:"block"}}>
+                {day.id}
+                <Am {...day} handleChange={handleChange} currentTime={currentTime}/>
+                <Pm {...day} handleChange={handleChange} currentTime={currentTime}/>
+                <Eve {...day} handleChange={handleChange} currentTime={currentTime}/>
+            </li>
+        </ul>
     )
 })
 return(
-    <ul>
-        {displayDates}
-    </ul>
+    <div>
+        <CarouselRender
+            displayDates={displayDates}
+            displayDatesCopy = {displayDates}
+            displayGroup={displayGroup}
+        />
+    </div>
 )
     //have the day "display:none" when all the booked states are true
 

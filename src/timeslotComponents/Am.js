@@ -2,7 +2,6 @@ import React from  'react'
 
 
 function Am (props) {
-
     return(
 
         <div>
