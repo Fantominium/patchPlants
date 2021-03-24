@@ -2,7 +2,9 @@ Malcolm Garner
 Patch Plants Technical Test
 
 Still outstanding:
+
 -State persistence through component unmount (swiping through the days)
+
 -Tests
 
 
